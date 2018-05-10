@@ -13,9 +13,19 @@ class CreateProductsTable extends Migration
      */
     public function up()
     {
+      
         Schema::create('products', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('cat_id')->unsigned()->index();
+            $table->foreign('cat_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->string('name');
+            $table->text('detail');
+            $table->integer('price');
+            $table->integer('stock');
+            $table->integer('discount');
+            $table->integer('user_id')->unsigned()->index();
             $table->timestamps();
+            $table->engine = 'InnoDB';
         });
     }
 
@@ -27,5 +37,7 @@ class CreateProductsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('products');
+        Schema::dropIfExists('categories');
+
     }
 }
