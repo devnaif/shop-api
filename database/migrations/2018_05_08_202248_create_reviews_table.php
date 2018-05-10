@@ -23,7 +23,7 @@ class CreateReviewsTable extends Migration
             $table->text('review');
             $table->integer('star');
             $table->timestamps();
-            $table->engine = 'InnoDB';
+
             
         });
 
@@ -38,6 +38,5 @@ class CreateReviewsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('reviews');
-        Schema::dropIfExists('products');
     }
 }

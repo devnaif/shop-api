@@ -25,7 +25,7 @@ class CreateProductsTable extends Migration
             $table->integer('discount');
             $table->integer('user_id')->unsigned()->index();
             $table->timestamps();
-            $table->engine = 'InnoDB';
+
         });
     }
 
@@ -37,7 +37,7 @@ class CreateProductsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('products');
-        Schema::dropIfExists('categories');
+        
 
     }
 }
