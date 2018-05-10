@@ -12,7 +12,7 @@ $factory->define(App\Model\Product::class, function (Faker $faker) {
         'user_id' => function(){
         	return App\User::all()->random();
         },
-        'cat_id' => function(){
+        'category_id' => function(){
             return App\Model\Category::all()->random();
         },
     ];
