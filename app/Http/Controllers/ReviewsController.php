@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Model\Product;
 use App\Model\Reviews;
 use App\Http\Resources\Reviews\ReviewsResource;
+use App\Http\Requests\ReviewsRequest;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Http\Request;
 
 class ReviewsController extends Controller
@@ -35,9 +37,13 @@ class ReviewsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ReviewsRequest $request, Product $product)
     {
-        //
+        $review = new Reviews($request->all());
+        $product->reviews()->save($review);
+        return response([
+            'data' => new ReviewsResource($review)
+        ],Response::HTTP_CREATED);
     }
 
     /**
@@ -46,9 +52,9 @@ class ReviewsController extends Controller
      * @param  \App\Model\Reviews  $reviews
      * @return \Illuminate\Http\Response
      */
-    public function show(Reviews $reviews)
+    public function show(Product $product, Reviews $reviews)
     {
-        //
+        
     }
 
     /**
@@ -69,9 +75,13 @@ class ReviewsController extends Controller
      * @param  \App\Model\Reviews  $reviews
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Reviews $reviews)
+    public function update(Request $request, Product $product, Reviews $reviews)
     {
-        //
+
+        $product->reviews()->update($request->all());
+        return response([
+            "Ok"
+        ],Response::HTTP_CREATED);
     }
 
     /**
@@ -80,8 +90,10 @@ class ReviewsController extends Controller
      * @param  \App\Model\Reviews  $reviews
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Reviews $reviews)
+    public function destroy(Request $request, Product $product, Reviews $reviews)
     {
-        //
+
+        $product->reviews()->delete($request->all());
+        return response(null,Response::HTTP_NO_CONTENT);
     }
 }

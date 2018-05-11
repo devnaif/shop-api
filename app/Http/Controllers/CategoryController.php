@@ -6,6 +6,8 @@ use App\Http\Resources\Categories\CategoriesCollection;
 use App\Http\Resources\Categories\CategoryResource;
 use App\Model\Category;
 use Illuminate\Http\Request;
+use App\Http\Requests\CategoryRequest;
+use Symfony\Component\HttpFoundation\Response;
 
 class CategoryController extends Controller
 {
@@ -35,9 +37,17 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
-        //
+        $category = new Category;
+        $category->name = $request->name;
+        $category->detail = $request->description;
+        $category->user_id = $request->user_id;
+        $category->save();
+        return response([
+            'data' => new CategoryResource($category)
+        ],Response::HTTP_CREATED);
+        
     }
 
     /**
@@ -71,7 +81,13 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $request['detail'] = $request->description;
+        unset($request['description']);
+        $category->update($request->all());
+
+        return response([
+            'data' => new CategoryResource($category)
+        ],Response::HTTP_CREATED);
     }
 
     /**
@@ -82,6 +98,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+        return response(null,Response::HTTP_NO_CONTENT);
     }
 }
