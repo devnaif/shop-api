@@ -12,9 +12,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 
+Route::post('login', 'AuthController@login');
 
-
-Route::apiResource('/products','ProductController');
+Route::apiResource('/products','ProductController', ['middleware' => 'auth.token']);
 
 Route::group(['prefix'=>'products'],function(){
 	Route::apiResource('/{product}/reviews','ReviewsController');
