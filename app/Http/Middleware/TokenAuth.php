@@ -16,7 +16,7 @@ class TokenAuth extends BaseMiddleware
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, $roles = [], $permissions = [])
     {
         if( ! $token = $this->auth->setRequest($request)->getToken() )
         {
@@ -37,6 +37,18 @@ class TokenAuth extends BaseMiddleware
                 $e->getStatusCode(), [$e]);
         }
 
+        if($roles || $permissions)
+        {
+            if (!$user->ability(
+                explode('|', $roles),
+                explode('|', $permissions)
+            )
+            ) {
+                return $this->respond('tymon.jwt.invalid',
+                    'token_invalid', 401, 'Unauthorized');
+            }
+        }
+        
         return $next($request);
     }
 }

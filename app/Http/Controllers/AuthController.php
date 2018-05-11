@@ -33,4 +33,5 @@ class AuthController extends ApiController
         }
         return $this->respond(compact('token'));
     }
+   
 }

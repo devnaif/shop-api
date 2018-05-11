@@ -10,6 +10,14 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+
+
+    public function __construct(Product $product){
+
+        $this->middleware('auth.token:admin,create_product|update_product', ['only' => [ 'store','edit', 'destroy', 'create', 'update']]);
+        // $this->middleware('auth.token', ['except' => ['store', 'update']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -38,7 +46,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return 'Hello World';
     }
 
     /**
